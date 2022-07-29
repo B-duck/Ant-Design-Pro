@@ -274,6 +274,9 @@ button:-moz-focusring,
     width: 208px;
     /* 最小高度和可视区域高度相同 */
     min-height: 100vh;
+    position: relative;
+    /* 侧边菜单栏压盖头部导航栏 */
+    z-index: 3;
 }
 .g-ant__main{
     /* 右侧自适应剩余布局 */
@@ -336,7 +339,6 @@ button:-moz-focusring,
     /* 上中下的排列结构 */
     flex-direction: column;
     background: #f1f2f6;
-    padding: 20px;
 }
 .g-ant-main__head{
     height: 48px;
@@ -348,6 +350,17 @@ button:-moz-focusring,
     align-items: center;
     column-gap: 20px;
     padding: 0 20px;
+}
+.g-ant-main__head--fixed{
+    position: fixed;
+    /* 占网页视口宽 */
+    left: 0;
+    right: 0;
+    z-index: 2;
+}
+/* 不具备hide样式是生效的，头部导航栏是出现的 */
+.g-ant-main__head--fixed:not(.hide) + .g-ant-main__main{
+    margin-top: 48px;
 }
 .g-ant-main__head>span{
     /* 文字和图标减少一点空隙 */
@@ -462,9 +475,14 @@ button:-moz-focusring,
     top: 0;
     padding: 0 15px;
     box-sizing: border-box;
+    z-index: 10;
 }
 .m-setting--open{
     right: 0;
+}
+/* 点击，菜单打开，蒙层也出现 */
+.m-setting--open + .u-mask{
+    display: block;
 }
 .m-setting__bar{
     width: 48px;
@@ -569,6 +587,12 @@ button:-moz-focusring,
     background: var(--theme);
     cursor: pointer;
 }
+.u-switch--closed{
+    background: rgba(0, 0, 0, 0.25);
+}
+.u-switch--closed .u-switch__handle{
+    left: 14px;
+}
 .u-switch__handle{
     width: 12px;
     height: 12px;
@@ -578,10 +602,18 @@ button:-moz-focusring,
     left: 2px;
     top: 2px;
 }
+/* 蒙层 */
 .u-mask{
     width: 100vw;
     height: 100vh;
     background: rgba(0, 0, 0, 0.4);
+    position: fixed;
+    left: 0;
+    top: 0;
+    /* 可以覆盖所有，除了菜单 */
+    z-index: 5;
+    /* 一开始隐藏 */
+    display: none;
 }
 /*-----------------响应式系统-----------------------*/
 

@@ -135,7 +135,7 @@
          <!-- 中间内容 -->
         <div class="g-ant__main">
             <!-- 头，中，尾巴 -->
-            <div class="g-ant-main__head">
+            <div class="g-ant-main__head g-ant-main__head--fixed">
                 <i class="iconfont icon-idcard"></i>
                 <i class="iconfont icon-check-circle"></i>
                 <i class="iconfont icon-read"></i>
@@ -265,13 +265,13 @@
                     <li>
                         <span>内容头部</span>
                         <!-- 按钮 -->
-                        <div class="u-switch j-head--fixed">
+                        <div class="u-switch j-head--show">
                             <div class="u-switch__handle"></div>
                         </div>
                     </li>
                     <li>
                         <span>侧边菜单</span>
-                        <div class="u-switch j-sider--fixed">
+                        <div class="u-switch j-sider--show">
                             <div class="u-switch__handle"></div>
                         </div>
                     </li>
@@ -335,10 +335,14 @@
                 menus[i].querySelector('[class*="icon-arrow"]').className = 'iconfont icon-arrowdown'
             }
         }
+
+
         // 获取父元素
         var set = document.querySelector('.m-setting')
         // 获取设置按钮
         var sbar=document.querySelector('.m-setting__bar')
+        // 获取所有颜色集合
+        var themes = document.querySelectorAll('.m-setting-item__theme>li')
         sbar.onclick = function(){
             // 父元素样式在按钮点击后变成展开状态
             set.classList.toggle('m-setting--open')
@@ -352,6 +356,47 @@
                 var icon = this.querySelector('i')
                 icon.className = 'iconfont icon-setting'
             }
+        }
+
+        // 循环颜色
+        for(var i=0;i<themes.length;i++){
+            themes[i].onclick = function(){
+                // 其他主题再还原到没有icon-check图标
+                for(var i=0;i<themes.length;i++){
+                    themes[i].innerHTML = '';
+                }
+                // 给被点击的盒子加内容
+                this.innerHTML = '<i class="iconfont icon-check"></i>'
+                // 获取到主题颜色，声明变量
+                var color = getComputedStyle(this).backgroundColor
+                document.documentElement.style.setProperty('--theme',color)
+            }
+        }
+
+        // 获取到内容头部
+        var headfixed  = document.querySelector('.j-head--fixed')
+        var siderfixed = document.querySelector('.j-sider--fixed')
+        var headshow = document.querySelector('.j-head--show')
+        var sidershow = document.querySelector('.j-sider--show')
+        // 获取头部导航
+        var mainhead = document.querySelector('.g-ant-main__head');
+        var wrap = document.querySelector('.g-ant-sider__wrap')
+        // 分别加点击事件
+        headfixed.onclick = function(){
+            this.classList.toggle('u-switch--closed')
+            mainhead.classList.toggle('g-ant-main__head--fixed')
+        }
+        siderfixed.onclick = function(){
+            this.classList.toggle('u-switch--closed')
+            wrap.classList.toggle('g-ant-sider__wrap--fixed')
+        }
+        headshow.onclick = function(){
+            this.classList.toggle('u-switch--closed')
+            mainhead.classList.toggle('hide')
+        }
+        sidershow.onclick = function(){
+            this.classList.toggle('u-switch--closed')
+            sider.classList.toggle('hide')
         }
     </script>
 </body>
